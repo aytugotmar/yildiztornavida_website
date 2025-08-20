@@ -1,0 +1,31 @@
+﻿@model IEnumerable<WebApplication.Models.Model.Comment>
+
+@if (Model != null && Model.Any())
+{
+    <div class="comments">
+        @foreach (var comment in Model)
+        {
+            <div class="comment mb-3 p-3 border rounded">
+                <div class="comment-author d-flex align-items-center mb-2">
+                    @*<img src="@comment.Admin.ImageURL" alt="Avatar" class="rounded-circle me-2" style="width: 40px; height: 40px;">*@
+                    <div>
+                        <strong>@comment.Admin.Name @comment.Admin.Surname</strong>
+                        <br>
+                        <small class="text-muted">
+                            <i class="fas fa-calendar"></i> @comment.CreatedAt.ToString("dd MMMM yyyy, HH:mm", new System.Globalization.CultureInfo("tr-TR"))
+                        </small>
+                    </div>
+                </div>
+                <div class="comment-text">
+                    <p class="mb-0">@comment.CommentText</p>
+                </div>
+            </div>
+        }
+    </div>
+}
+else
+{
+    <div class="alert alert-info">
+        <i class="fas fa-info-circle"></i> Bu yazı için henüz onaylanmış bir yorum bulunmamaktadır.
+    </div>
+}

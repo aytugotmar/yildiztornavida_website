@@ -1,0 +1,60 @@
+﻿@model IEnumerable<WebApplication.Models.Model.Category>
+
+@{
+    ViewBag.Title = "Kategoriler";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<div class="page-breadcrumb">
+    <div class="row">
+        <div class="col-5 align-self-center">
+            <h4 class="page-title">Kategoriler Yönetim Paneli</h4>
+        </div>
+        <div class="col-7 align-self-center">
+            <div class="d-flex align-items-center justify-content-end">
+                <nav aria-label="breadcrumb">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item">
+                            <a href="/Admin/Index">Ana Sayfa</a>
+                        </li>
+                        <li class="breadcrumb-item active" aria-current="page">Category</li>
+                    </ol>
+                </nav>
+            </div>
+        </div>
+    </div>
+</div>
+
+<br />
+<a class="btn btn-default" href="/Category/Create">Yeni Kategori Ekle</a>
+<br />
+<br />
+
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.CategoryName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Description)
+        </th>
+        <th></th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.CategoryName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Description)
+            </td>
+            <td>
+                @Html.ActionLink("Düzenle", "Edit", new { id = item.CategoryId }) <br />
+                @Html.ActionLink("Sil", "Delete", new { id = item.CategoryId })
+            </td>
+        </tr>
+    }
+
+</table>

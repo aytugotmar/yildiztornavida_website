@@ -1,0 +1,108 @@
+﻿@using System.Text.RegularExpressions
+@using PagedList;
+@using PagedList.Mvc;
+
+@model IPagedList<WebApplication.Models.Model.Blog>
+@{
+    ViewBag.Title = ViewBag.CategoryName != null ? ViewBag.CategoryName + " Blog Yazıları" : "Kategoriye Göre Yazılar";
+    Layout = "~/Views/Shared/_SiteLayout.cshtml";
+}
+
+<section id="inner-headline" style="background-color: black; color: white;">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+                <ul class="breadcrumb" style="background-color: transparent;">
+                    <li><a href="/"><i class="fa fa-home"></i></a><i class="icon-angle-right"></i></li>
+                    @* Breadcrumb'e kategori adını dinamik olarak ekliyoruz *@
+                    <li class="active">@ViewBag.CategoryName</li>
+                </ul>
+            </div>
+            <div class="col-lg-12 text-center">
+                @* Kategori adı ve açıklaması için başlık ve paragraf ekliyoruz *@
+                <h2 style="color: white; margin-top: 10px;">@ViewBag.CategoryName Kategorisi</h2>
+                @if (ViewBag.CategoryDescription != null)
+                {
+                    <p style="color: white; margin-top: 5px;">@ViewBag.CategoryDescription</p>
+                }
+            </div>
+        </div>
+    </div>
+</section>
+
+<section id="content">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8">
+
+                @if (Model.Any()) // Model boş değilse, blog yazılarını göster
+                {
+                    foreach (var item in Model)
+                    {
+                        <article>
+                            <div class="post-image">
+                                <div class="post-heading">
+                                    <h3><a href="@Url.Action("BlogDetail", "Home", new { id = item.BlogId })">@Html.Raw(Regex.Replace(item.Title ?? "", "<.*?>", String.Empty))</a></h3>
+                                </div>
+                                <img src="@item.CoverURL" alt="@Html.Raw(Regex.Replace(item.Title ?? "", "<.*?>", String.Empty))" />
+                            </div>
+                            <p>
+                                @{
+                                    var plainText = Regex.Replace(item.Text ?? "", "<.*?>", String.Empty);
+                                }
+                                @(plainText.Length > 250 ? plainText.Substring(0, 250) + "..." : plainText)
+                            </p>
+                            <div class="bottom-article">
+                                <ul class="meta-post">
+                                    <li>
+                                        <i class="fas fa-calendar"></i>
+                                        @{
+                                            var displayDate = item.UpdatedAt.HasValue ? item.UpdatedAt.Value : item.CreatedAt;
+                                        }
+                                        <span>@displayDate.ToString("dd MMMM yyyy, HH.mm", new System.Globalization.CultureInfo("tr-TR"))</span>
+                                    </li>
+                                    <li><i class="fas fa-user"></i><a href="/Home/BlogbyAuthor/@item.AuthorId"> @item.Author.Name </a></li>
+                                    <li><i class="fas fa-folder-open"></i><a href="/Home/BlogbyCategory/@item.CategoryId"> @item.Category.CategoryName </a></li>
+                                </ul>
+                                <a href="@Url.Action("BlogDetail", "Home", new { id = item.BlogId })" class="pull-right"> Devamını Oku <i class="icon-angle-right"></i></a>
+                            </div>
+                        </article>
+                    }
+
+                    <div id="pagination">
+                        @* Pagination linkini düzeltiyoruz. Sayfalama yaparken kategori ID'sini korumalıyız. *@
+                        @Html.PagedListPager(Model, Page => Url.Action("BlogbyCategory", new { id = ViewBag.CategoryId, Page = Page }), PagedListRenderOptions.ClassicPlusFirstAndLast)
+                    </div>
+                }
+                else // Model boşsa, mesajı göster
+                {
+                    <div class="alert alert-info" role="alert">
+                        Bu sayfada gösterilecek sonuç bulunamamıştır.
+                    </div>
+                }
+            </div>
+
+            <div class="col-lg-4">
+                <aside class="right-sidebar">
+                    <div class="widget">
+                        <form class="form-search">
+                            <input class="form-control" type="text" placeholder="Search..">
+                        </form>
+                    </div>
+                    <div class="widget">
+                        <h5 class="widgetheading">Kategoriler</h5>
+                        @{
+                            Html.RenderAction("PartialCategory", "Home");
+                        }
+                    </div>
+                    <div class="widget">
+                        <h5 class="widgetheading">Son Yazılar</h5>
+                        @{
+                            Html.RenderAction("PartialPosts", "Home");
+                        }
+                    </div>
+                </aside>
+            </div>
+        </div>
+    </div>
+</section>

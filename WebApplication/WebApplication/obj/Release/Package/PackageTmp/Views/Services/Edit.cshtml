@@ -1,0 +1,55 @@
+﻿@model WebApplication.Models.Model.Services
+@{
+    ViewBag.Title = "Edit";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<form class="form-horizontal m-t-30" method="post" action="/Services/Edit/@Model.ServiceId" enctype="multipart/form-data">
+    <div class="form-group">
+        <label>Başlık <span class="required">*</span> </label>
+        <input type="text" name="Title" class="form-control" required value="@Model.Title">
+    </div>
+    <div class="form-group">
+        <label>Açıklama <span class="required">*</span> </label>
+        <textarea id="editor1" name="Description" class="form-control" rows="5" required>@Model.Description</textarea>
+    </div>
+    <div class="form-group">
+        <label>Eski Resim</label>
+        <br />
+        <img src="@Model.ImageURL" width="800" height="600" alt="Service Image" />
+    </div>
+
+    <div class="d-flex flex-column flex-md-row align-items-center gap-2 mb-3">
+        <!-- Buton -->
+        <button type="button" class="btn btn-primary" id="uploadBtn">Yükle</button>
+
+        <!-- Seçilen dosya adı -->
+        <span id="fileName" class="text-truncate" style="margin-left: 5px; max-width: 300px;">Dosya seçilmedi</span>
+
+        <!-- Gizli file input -->
+        <input type="file" id="fileInput" name="ImageURL" accept=".png,.jpeg,.jpg,.webp" style="display:none;">
+    </div>
+
+    <script>
+        const uploadBtn = document.getElementById('uploadBtn');
+        const fileInput = document.getElementById('fileInput');
+        const fileNameSpan = document.getElementById('fileName');
+
+        // Butona tıklayınca gizli input tetiklensin
+        uploadBtn.addEventListener('click', () => fileInput.click());
+
+        // Dosya seçilince adı göster
+        fileInput.addEventListener('change', (e) => {
+            const fileName = e.target.files.length > 0 ? e.target.files[0].name : "Dosya seçilmedi";
+            fileNameSpan.textContent = fileName;
+        });
+    </script>
+
+
+    <div class="form-group">
+        <div class="col-lg-offset-2 col-lg-10">
+            <button type="submit" class="btn btn-primary">Kaydet</button>
+            <a href="/Services" class="btn btn-primary text-light text-decoration-none">Geri Dön</a>        
+        </div>
+    </div>
+</form>

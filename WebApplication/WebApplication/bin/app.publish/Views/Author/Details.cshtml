@@ -1,0 +1,41 @@
+﻿@model WebApplication.Models.Model.Author
+
+@{
+    ViewBag.Title = "Details";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<div>
+    <h4>Yazar</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            Yazar Resmi
+        </dt>
+
+        <dd>
+            <img src="@Model.ImageURL" alt="Yazar Resmi" style="height: 25vh; width:auto;" />
+        </dd>
+
+        <dt>
+            Yazar Adı
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Name)
+        </dd>
+
+        <dt>
+            Yazar Açıklaması
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Bio)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Düzenle", "Edit", new { id = Model.AuthorId }) |
+    @Html.ActionLink("Geri Dön", "Index")
+</p>
