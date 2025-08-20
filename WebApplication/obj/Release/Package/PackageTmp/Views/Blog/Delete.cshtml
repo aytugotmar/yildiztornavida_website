@@ -1,0 +1,56 @@
+﻿@model WebApplication.Models.Model.Blog
+
+@{
+    ViewBag.Title = "Delete";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<h3>Silmek istediğinden emin misin?</h3>
+<div>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            Başlık
+        </dt>
+
+        <dd>
+            @Html.Raw(Model.Title)
+        </dd>
+
+        <dt>
+            İçerik
+        </dt>
+
+        <dd>
+            @Html.Raw(Model.Text)
+        </dd>
+
+        <dt>
+            Kategori Adı
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Category.CategoryName)
+        </dd>
+
+        <dt>
+            Yazar Adı
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Author.Name)
+        </dd>
+    </dl>
+
+    @using (Html.BeginForm())
+    {
+        @Html.AntiForgeryToken()
+
+        <div class="form-actions no-color">
+            <input type="submit" value="Sil" class="btn btn-default" /> |
+            @Html.ActionLink("Geri Dön", "Index")
+        </div>
+    }
+</div>
+
+

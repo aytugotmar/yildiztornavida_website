@@ -1,0 +1,67 @@
+﻿@model IEnumerable<WebApplication.Models.Model.Admin>
+@{
+    ViewBag.Title = "Kullanıcı Yönetimi";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<div class="page-breadcrumb">
+    <div class="row">
+        <div class="col-5 align-self-center">
+            <h4 class="page-title">Kullanıcı Yönetimi</h4>
+        </div>
+        <div class="col-7 align-self-center">
+            <div class="d-flex align-items-center justify-content-end">
+                <nav aria-label="breadcrumb">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item">
+                            <a href="/Admin/Index">Ana Sayfa</a>
+                        </li>
+                        <li class="breadcrumb-item active" aria-current="page">User Manage</li>
+                    </ol>
+                </nav>
+            </div>
+        </div>
+    </div>
+</div>
+
+<br />
+<a class="btn btn-default" href="/Admin/Create">Yeni Kullanıcı Ekle</a>
+<br />
+<br />
+
+<div class="table-responsive">
+    <table id="myTable" class="table">
+        <thead class="thead-light">
+            <tr>
+                <th scope="col">@Html.DisplayNameFor(model => model.AdminId)</th>
+                <th scope="col">@Html.DisplayNameFor(model => model.Email)</th>
+                <th scope="col">Şifre</th>
+                <th scope="col">Ad</th>
+                <th scope="col">Soyad</th>
+                <th scope="col">Yetki</th>
+                <th scope="col">İşlemler</th>
+            </tr>
+        </thead>
+        
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>@Html.DisplayFor(modelItem => item.AdminId)</td>
+                    <td>@Html.Raw(item.Email)</td>
+                    <td>@Html.DisplayFor(modelItem => item.Password)</td>
+                    <td>@Html.DisplayFor(modelItem => item.Name)</td>
+                    <td>@Html.DisplayFor(modelItem => item.Surname)</td>
+                    <td>@Html.DisplayFor(modelItem => item.Authority)</td>
+                    <td>
+                        @Html.ActionLink("Düzenle", "Edit", new { id = item.AdminId })
+                        <br />
+                        @Html.ActionLink("Sil", "Delete", new { id = item.AdminId })
+                        <br />
+                        @Html.ActionLink("Detay", "Details", new { id = item.AdminId })
+                    </td>
+                </tr>
+            }
+            </tbody>
+    </table>
+</div>
